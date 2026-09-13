@@ -121,14 +121,14 @@
   .month-title{
     font-family:'Fraunces', serif;
     font-weight: 480;
-    font-size: 29px;
+    font-size: 32px;
     letter-spacing: -0.01em;
     line-height: 1.05;
   }
   .month-title .year{
     color: var(--text-dim);
     font-weight: 340;
-    font-size: 19px;
+    font-size: 21px;
     margin-left: 8px;
   }
 
@@ -155,7 +155,7 @@
     width: auto;
     padding: 0 10px;
     border-radius: 16px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--gold);
     white-space: nowrap;
@@ -163,13 +163,13 @@
 
   .lunar-month-caption{
     margin-top: 4px;
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--text-faint);
   }
 
   .term-caption{
     margin-top: 2px;
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: var(--term);
     display:flex;
     align-items:center;
@@ -193,7 +193,7 @@
   }
   .weekday-row span{
     text-align:center;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-faint);
     font-weight: 500;
   }
@@ -214,14 +214,16 @@
     padding: 3px 2px 5px;
     cursor:pointer;
     border-bottom: 1px solid var(--line);
+    border-right: 1px solid var(--line);
   }
   .day-cell.empty{ cursor:default; }
+  .day-cell:nth-child(7n){ border-right:none; }
 
   .day-cell .solar{
-    font-size: 14.5px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--text);
-    width: 30px; height: 30px;
+    width: 33px; height: 33px;
     display:flex; align-items:center; justify-content:center;
     border-radius: 50%;
     transition: background .15s ease;
@@ -229,9 +231,9 @@
 
   .day-cell .lunar{
     margin-top: 1px;
-    font-size: 10px;
+    font-size: 12px;
     color: var(--text-faint);
-    height: 12px;
+    height: 14px;
   }
 
   .day-cell.other-month .solar{ color: var(--text-faint); opacity: 0.55;}
@@ -288,7 +290,7 @@
     gap: 14px;
     justify-content:center;
     margin-top: 10px;
-    font-size: 10.5px;
+    font-size: 11.5px;
     color: var(--text-faint);
   }
   .legend{ flex-wrap: wrap; row-gap: 6px; }
@@ -300,162 +302,91 @@
   .legend i.off{ background: var(--accent-red); }
   .legend i.term{ width:10px; height:2px; border-radius:2px; background: var(--term); }
 
-  /* ---------- Today card ---------- */
-  .today-card{
-    margin-top: 14px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 13px 18px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap: 12px;
-    cursor:pointer;
-  }
-  .today-card:active{ background: var(--surface-2); }
-
-  .today-card .big{
-    font-family:'Fraunces', serif;
-    font-size: 22px;
-    font-weight: 480;
-    color: var(--gold);
-    line-height:1.3;
-  }
-  .today-card .big .lbl,
-  .today-card .solar-sub .lbl{
-    font-family:'Be Vietnam Pro', sans-serif;
-    font-size: 11.5px;
-    font-weight: 500;
-    color: var(--text-dim);
-    margin-right: 5px;
-  }
-  .today-card .solar-sub{
-    font-size: 13px;
-    color: var(--text);
-    margin-top: 2px;
-  }
-  .today-card .cap{
-    font-size: 11.5px;
-    color: var(--text-faint);
-    margin-top: 6px;
-  }
-  .today-card .arrow{
-    color: var(--text-faint);
-    flex-shrink:0;
-  }
-
   footer{
     margin-top: auto;
     padding-top: 10px;
     text-align:center;
-    font-size: 10.5px;
+    font-size: 11.5px;
     color: var(--text-faint);
   }
 
-  /* ---------- Bottom sheet ---------- */
-  .backdrop{
-    position: fixed; inset:0;
-    background: rgba(6,8,20,0.55);
-    backdrop-filter: blur(2px);
-    opacity:0; pointer-events:none;
-    transition: opacity .22s ease;
-    z-index: 40;
-  }
-  .backdrop.open{ opacity:1; pointer-events:auto; }
-
-  .sheet{
-    position: fixed;
-    left:0; right:0; bottom:0;
-    max-width: 480px;
-    margin: 0 auto;
-    background: var(--bg-soft);
+  /* ---------- Chi tiết ngày (hiện cố định bên dưới) ---------- */
+  .day-detail{
+    margin-top: 14px;
+    background: var(--surface);
     border: 1px solid var(--line);
-    border-bottom:none;
-    border-radius: 26px 26px 0 0;
-    padding: 10px 24px calc(env(safe-area-inset-bottom) + 26px);
-    transform: translateY(100%);
-    transition: transform .28s cubic-bezier(.32,.72,0,1);
-    z-index: 41;
-  }
-  .sheet.open{ transform: translateY(0); }
-
-  .sheet .handle{
-    width: 36px; height:4px; border-radius:2px;
-    background: var(--line);
-    margin: 8px auto 18px;
+    border-radius: var(--radius);
+    padding: 16px 20px 18px;
   }
 
-  .sheet .weekday-line{
-    font-size: 13px;
+  .detail-weekday{
+    text-align:center;
+    font-size: 13.5px;
     color: var(--text-dim);
+    letter-spacing: 0.02em;
   }
 
-  .sheet-dates{
-    display:flex;
-    align-items:flex-end;
-    gap: 26px;
-    margin-top: 8px;
+  .detail-dates{
+    position:relative;
+    height: 48px;
+    margin-top: 6px;
   }
-  .sheet-dates .date-block{
-    display:flex;
-    flex-direction:column;
-    gap: 3px;
-  }
-  .sheet-dates .date-label{
-    font-size: 11px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .sheet-dates .date-num{
+  .detail-solar{
+    position:absolute;
+    top:0; left:0;
     font-family:'Fraunces', serif;
     font-weight: 480;
-    line-height: 1.1;
+    font-size: 20px;
     color: var(--text);
-    font-size: 22px;
+    line-height:1.15;
   }
-  .sheet-dates .lunar-block .date-num{
+  .detail-lunar{
+    position:absolute;
+    bottom:0; right:0;
+    font-family:'Fraunces', serif;
+    font-weight: 480;
+    font-size: 20px;
     color: var(--gold);
-    font-size: 32px;
+    line-height:1.15;
   }
 
-  .sheet .rows{
-    margin-top: 18px;
+  .rows{
+    margin-top: 14px;
     border-top: 1px solid var(--line);
     padding-top: 14px;
     display:flex;
     flex-direction:column;
     gap: 12px;
   }
-  .sheet .row{
+  .row{
     display:flex;
     justify-content:space-between;
-    font-size: 14px;
+    font-size: 15px;
   }
-  .sheet .row .k{ color: var(--text-dim); }
-  .sheet .row .v{ color: var(--text); font-weight:500; text-align:right; }
+  .row .k{ color: var(--text-dim); }
+  .row .v{ color: var(--text); font-weight:500; text-align:right; }
 
-  .sheet .note{
+  .note{
     margin-top: 16px;
     background: rgba(216,178,110,0.09);
     border: 1px solid rgba(216,178,110,0.25);
     color: var(--gold);
-    font-size: 13px;
+    font-size: 14px;
     padding: 10px 14px;
     border-radius: 12px;
   }
-  .sheet .note.off{
+  .note.off{
     background: rgba(193,102,95,0.10);
     border: 1px solid rgba(193,102,95,0.3);
     color: var(--accent-red);
   }
 
   @media (max-width: 340px){
-    .month-title{ font-size: 28px; }
-    .day-cell .solar{ width:30px; height:30px; font-size:14.5px; }
+    .month-title{ font-size: 26px; }
+    .day-cell .solar{ width:33px; height:33px; font-size:16px; }
   }
 </style>
+
 </head>
 <body>
 
@@ -483,7 +414,7 @@
   </header>
 
   <div class="weekday-row">
-    <span class="sun">CN</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span>
+    <span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span class="sun">CN</span>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -496,42 +427,24 @@
     <span><i class="term"></i>Đầu tiết khí</span>
   </div>
 
-  <div class="today-card" id="todayCard">
-    <div>
-      <div class="big"><span class="lbl">Âm lịch:</span><span id="todayBig">—</span></div>
-      <div class="solar-sub"><span class="lbl">Dương lịch:</span><span id="todaySolarSub">—</span></div>
-      <div class="cap" id="todayCap">Xem chi tiết hôm nay</div>
+  <div class="day-detail" id="dayDetail">
+    <div class="detail-weekday" id="sheetWeekday">Thứ Hai</div>
+    <div class="detail-dates">
+      <div class="detail-solar" id="sheetSolar">01/01/2026</div>
+      <div class="detail-lunar" id="sheetLunar">13/11</div>
     </div>
-    <div class="arrow">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    <div class="rows">
+      <div class="row"><span class="k">Năm âm lịch</span><span class="v" id="sheetYearCanChi">Ất Tỵ</span></div>
+      <div class="row"><span class="k">Ngày (Can Chi)</span><span class="v" id="sheetDayCanChi">Mậu Thân</span></div>
+      <div class="row"><span class="k">Tuổi con giáp</span><span class="v" id="sheetZodiac">Tỵ — Rắn</span></div>
+      <div class="row"><span class="k">Tiết khí</span><span class="v" id="sheetTerm">Bạch Lộ</span></div>
     </div>
+    <div class="note" id="sheetNote" style="display:none;"></div>
   </div>
 
   <footer>Lịch âm dương lịch Việt Nam</footer>
 </div>
 
-<div class="backdrop" id="backdrop"></div>
-<div class="sheet" id="sheet">
-  <div class="handle"></div>
-  <div class="weekday-line" id="sheetWeekday">Thứ Hai</div>
-  <div class="sheet-dates">
-    <div class="date-block lunar-block">
-      <div class="date-label">Âm lịch</div>
-      <div class="date-num" id="sheetLunar">13/11</div>
-    </div>
-    <div class="date-block solar-block">
-      <div class="date-label">Dương lịch</div>
-      <div class="date-num" id="sheetSolar">01/01/2026</div>
-    </div>
-  </div>
-  <div class="rows">
-    <div class="row"><span class="k">Năm âm lịch</span><span class="v" id="sheetYearCanChi">Ất Tỵ</span></div>
-    <div class="row"><span class="k">Ngày (Can Chi)</span><span class="v" id="sheetDayCanChi">Mậu Thân</span></div>
-    <div class="row"><span class="k">Tuổi con giáp</span><span class="v" id="sheetZodiac">Tỵ — Rắn</span></div>
-    <div class="row"><span class="k">Tiết khí</span><span class="v" id="sheetTerm">Bạch Lộ</span></div>
-  </div>
-  <div class="note" id="sheetNote" style="display:none;"></div>
-</div>
 
 <script>
 /* =========================================================
@@ -765,7 +678,6 @@ let selected = { d: today.getDate(), m: viewMonth, y: viewYear };
 const monthTitle = document.getElementById('monthTitle');
 const lunarCaption = document.getElementById('lunarCaption');
 const grid = document.getElementById('grid');
-const todayBig = document.getElementById('todayBig');
 
 function isSameDate(d1m1y1, d2, m2, y2){
   return d1m1y1.d === d2 && d1m1y1.m === m2 && d1m1y1.y === y2;
@@ -773,15 +685,7 @@ function isSameDate(d1m1y1, d2, m2, y2){
 
 function pad2(n){ return String(n).padStart(2, '0'); }
 
-function renderTodayBanner(){
-  const l = convertSolar2Lunar(today.getDate(), today.getMonth()+1, today.getFullYear(), TZ);
-  const leapTxt = l.leap ? " N" : "";
-  const solarStr = `${pad2(today.getDate())}/${pad2(today.getMonth()+1)}/${today.getFullYear()}`;
-  const lunarStr = `${pad2(l.day)}/${pad2(l.month)}${leapTxt}`;
-
-  todayBig.textContent = lunarStr;
-  document.getElementById('todaySolarSub').textContent = solarStr;
-
+function updateTermCaption(){
   const term = getTermForDate(today.getDate(), today.getMonth()+1, today.getFullYear(), TZ);
   document.getElementById('termCaption').textContent =
     `Tiết ${term.name} · ${term.start[0]}/${term.start[1]} – ${term.end[0]}/${term.end[1]}`;
@@ -805,7 +709,7 @@ function renderMonth(){
   grid.innerHTML = '';
 
   const firstOfMonth = new Date(viewYear, viewMonth - 1, 1);
-  const startWeekday = firstOfMonth.getDay(); // 0 = Sunday
+  const startWeekday = (firstOfMonth.getDay() + 6) % 7; // 0 = Thứ Hai
   const daysInMonth = new Date(viewYear, viewMonth, 0).getDate();
 
   // previous month trailing days
@@ -885,22 +789,19 @@ function makeCell(d, m, y, otherMonth){
       document.querySelectorAll('.day-cell.selected').forEach(el => el.classList.remove('selected'));
       cell.classList.add('selected');
     }
-    openSheet(d, m, y);
+    renderDetail(d, m, y);
   });
 
   return cell;
 }
 
-/* ---------- Bottom sheet ---------- */
-const sheet = document.getElementById('sheet');
-const backdrop = document.getElementById('backdrop');
-
-function openSheet(d, m, y){
+/* ---------- Chi tiết ngày (hiện cố định bên dưới) ---------- */
+function renderDetail(d, m, y){
   const lunar = convertSolar2Lunar(d, m, y, TZ);
   const dateObj = new Date(y, m - 1, d);
   document.getElementById('sheetWeekday').textContent = WEEKDAY_NAMES[dateObj.getDay()];
   document.getElementById('sheetSolar').textContent = `${pad2(d)}/${pad2(m)}/${y}`;
-  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${pad2(lunar.month)}${lunar.leap ? ' N' : ''}`;
+  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${pad2(lunar.month)}${lunar.leap ? ' N' : ''}/${lunar.year}`;
   document.getElementById('sheetYearCanChi').textContent = yearCanChi(lunar.year);
   document.getElementById('sheetDayCanChi').textContent = dayCanChi(d, m, y);
   const chiIdx = chiIndexOfYear(lunar.year);
@@ -930,27 +831,14 @@ function openSheet(d, m, y){
   } else {
     noteEl.style.display = 'none';
   }
-
-  sheet.classList.add('open');
-  backdrop.classList.add('open');
 }
-
-function closeSheet(){
-  sheet.classList.remove('open');
-  backdrop.classList.remove('open');
-}
-
-backdrop.addEventListener('click', closeSheet);
-
-document.getElementById('todayCard').addEventListener('click', () => {
-  openSheet(today.getDate(), today.getMonth()+1, today.getFullYear());
-});
 
 document.getElementById('todayNavBtn').addEventListener('click', () => {
   viewMonth = today.getMonth() + 1;
   viewYear = today.getFullYear();
   selected = { d: today.getDate(), m: viewMonth, y: viewYear };
   renderMonth();
+  renderDetail(today.getDate(), today.getMonth()+1, today.getFullYear());
 });
 
 /* ---------- Navigation ---------- */
@@ -1019,8 +907,9 @@ lightMedia.addEventListener('change', () => {
 applySavedTheme();
 
 /* ---------- init ---------- */
-renderTodayBanner();
+updateTermCaption();
 renderMonth();
+renderDetail(today.getDate(), today.getMonth()+1, today.getFullYear());
 
 if ('serviceWorker' in navigator){
   window.addEventListener('load', () => {
