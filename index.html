@@ -167,22 +167,6 @@
     color: var(--text-faint);
   }
 
-  .term-caption{
-    margin-top: 2px;
-    font-size: 12.5px;
-    color: var(--term);
-    display:flex;
-    align-items:center;
-    gap: 6px;
-  }
-  .term-caption::before{
-    content:'';
-    width: 6px; height:6px;
-    border-radius:50%;
-    background: var(--term);
-    flex-shrink:0;
-  }
-
   /* ---------- Calendar ---------- */
   .weekday-row{
     display:grid;
@@ -366,6 +350,14 @@
   .row .k{ color: var(--text-dim); }
   .row .v{ color: var(--text); font-weight:500; text-align:right; }
 
+  .tet-countdown{
+    margin-top: 14px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
   .note{
     margin-top: 16px;
     background: rgba(216,178,110,0.09);
@@ -410,7 +402,6 @@
       </div>
     </div>
     <div class="lunar-month-caption" id="lunarCaption">Tháng âm lịch</div>
-    <div class="term-caption" id="termCaption">Tiết khí</div>
   </header>
 
   <div class="weekday-row">
@@ -434,11 +425,10 @@
       <div class="detail-lunar" id="sheetLunar">13/11</div>
     </div>
     <div class="rows">
-      <div class="row"><span class="k">Năm âm lịch</span><span class="v" id="sheetYearCanChi">Ất Tỵ</span></div>
       <div class="row"><span class="k">Ngày (Can Chi)</span><span class="v" id="sheetDayCanChi">Mậu Thân</span></div>
-      <div class="row"><span class="k">Tuổi con giáp</span><span class="v" id="sheetZodiac">Tỵ — Rắn</span></div>
       <div class="row"><span class="k">Tiết khí</span><span class="v" id="sheetTerm">Bạch Lộ</span></div>
     </div>
+    <div class="tet-countdown" id="sheetTetCountdown">Còn 55 ngày nữa đến Tết Âm lịch Đinh Mùi</div>
     <div class="note" id="sheetNote" style="display:none;"></div>
   </div>
 
@@ -605,10 +595,32 @@ function convertSolar2Lunar(dd, mm, yy, timeZone){
   return { day: lunarDay, month: lunarMonth, year: lunarYear, leap: lunarLeap === 1 };
 }
 
+function convertLunar2Solar(lunarDay, lunarMonth, lunarYear, lunarLeap, timeZone){
+  let a11, b11;
+  if (lunarMonth < 11){
+    a11 = getLunarMonth11(lunarYear - 1, timeZone);
+    b11 = getLunarMonth11(lunarYear, timeZone);
+  } else {
+    a11 = getLunarMonth11(lunarYear, timeZone);
+    b11 = getLunarMonth11(lunarYear + 1, timeZone);
+  }
+  const k = INT(0.5 + (a11 - 2415021.076998695) / 29.530588853);
+  let off = lunarMonth - 11;
+  if (off < 0) off += 12;
+  if (b11 - a11 > 365){
+    const leapOff = getLeapMonthOffset(a11, timeZone);
+    let leapMonth = leapOff - 2;
+    if (leapMonth < 0) leapMonth += 12;
+    if (lunarLeap && lunarMonth !== leapMonth) return null;
+    else if (lunarLeap || off >= leapOff) off += 1;
+  }
+  const monthStart = getNewMoonDay(k + off, timeZone);
+  return jdToDate(monthStart + lunarDay - 1);
+}
+
 /* ---------- Can Chi ---------- */
 const CAN = ["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"];
 const CHI = ["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"];
-const ZODIAC = ["Chuột","Trâu","Hổ","Mèo","Rồng","Rắn","Ngựa","Dê","Khỉ","Gà","Chó","Lợn"];
 
 function yearCanChi(y){
   const can = (y + 6) % 10;
@@ -684,12 +696,6 @@ function isSameDate(d1m1y1, d2, m2, y2){
 }
 
 function pad2(n){ return String(n).padStart(2, '0'); }
-
-function updateTermCaption(){
-  const term = getTermForDate(today.getDate(), today.getMonth()+1, today.getFullYear(), TZ);
-  document.getElementById('termCaption').textContent =
-    `Tiết ${term.name} · ${term.start[0]}/${term.start[1]} – ${term.end[0]}/${term.end[1]}`;
-}
 
 function renderMonth(){
   monthTitle.innerHTML = `Tháng ${viewMonth} <span class="year">${viewYear}</span>`;
@@ -801,15 +807,22 @@ function renderDetail(d, m, y){
   const dateObj = new Date(y, m - 1, d);
   document.getElementById('sheetWeekday').textContent = WEEKDAY_NAMES[dateObj.getDay()];
   document.getElementById('sheetSolar').textContent = `${pad2(d)}/${pad2(m)}/${y}`;
-  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${pad2(lunar.month)}${lunar.leap ? ' N' : ''}/${lunar.year}`;
-  document.getElementById('sheetYearCanChi').textContent = yearCanChi(lunar.year);
+  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${pad2(lunar.month)}${lunar.leap ? ' N' : ''} ${yearCanChi(lunar.year)}`;
   document.getElementById('sheetDayCanChi').textContent = dayCanChi(d, m, y);
-  const chiIdx = chiIndexOfYear(lunar.year);
-  document.getElementById('sheetZodiac').textContent = `${CHI[chiIdx]} — ${ZODIAC[chiIdx]}`;
 
   const term = getTermForDate(d, m, y, TZ);
   document.getElementById('sheetTerm').textContent =
     `${term.name} (${term.start[0]}/${term.start[1]} – ${term.end[0]}/${term.end[1]})`;
+
+  const currentJd = jdFromDate(d, m, y);
+  const nextTetYear = lunar.year + 1;
+  const tetDate = convertLunar2Solar(1, 1, nextTetYear, false, TZ);
+  const tetJd = jdFromDate(tetDate[0], tetDate[1], tetDate[2]);
+  const daysToTet = tetJd - currentJd;
+  document.getElementById('sheetTetCountdown').textContent =
+    daysToTet <= 0
+      ? `Hôm nay là Tết Âm lịch ${yearCanChi(lunar.year)}`
+      : `Còn ${daysToTet} ngày nữa đến Tết Âm lịch ${yearCanChi(nextTetYear)}`;
 
   const noteEl = document.getElementById('sheetNote');
   const holidays = getHolidaysForDate(d, m, y, lunar);
@@ -907,7 +920,6 @@ lightMedia.addEventListener('change', () => {
 applySavedTheme();
 
 /* ---------- init ---------- */
-updateTermCaption();
 renderMonth();
 renderDetail(today.getDate(), today.getMonth()+1, today.getFullYear());
 
