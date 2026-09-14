@@ -1148,6 +1148,8 @@ function isLastDayOfLunarYear(dd, mm, yy){
 
 const WEEKDAY_NAMES = ["Chủ Nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"];
 const MONTH_LABELS = ["Một","Hai","Ba","Tư","Năm","Sáu","Bảy","Tám","Chín","Mười","Mười Một","Mười Hai"];
+function lunarMonthLabel(m){ return m === 12 ? "Chạp" : m; }
+function lunarMonthLabelPadded(m){ return m === 12 ? "Chạp" : String(m).padStart(2, '0'); }
 
 /* =========================================================
    Ứng dụng
@@ -1176,9 +1178,9 @@ function renderMonth(){
   const lastLunar = convertSolar2Lunar(lastDayNum, viewMonth, viewYear, TZ);
   let caption;
   if (firstLunar.month === lastLunar.month && firstLunar.year === lastLunar.year && firstLunar.leap === lastLunar.leap){
-    caption = `Tháng ${firstLunar.month}${firstLunar.leap?' (nhuận)':''} năm ${yearCanChi(firstLunar.year)}`;
+    caption = `Tháng ${lunarMonthLabel(firstLunar.month)}${firstLunar.leap?' (nhuận)':''} năm ${yearCanChi(firstLunar.year)}`;
   } else {
-    caption = `Tháng ${firstLunar.month}${firstLunar.leap?'N':''} - ${lastLunar.month}${lastLunar.leap?'N':''}, ${yearCanChi(lastLunar.year)}`;
+    caption = `Tháng ${lunarMonthLabel(firstLunar.month)}${firstLunar.leap?'N':''} - ${lunarMonthLabel(lastLunar.month)}${lastLunar.leap?'N':''}, ${yearCanChi(lastLunar.year)}`;
   }
   lunarCaption.textContent = caption;
 
@@ -1278,7 +1280,7 @@ function renderDetail(d, m, y){
   const dateObj = new Date(y, m - 1, d);
   document.getElementById('sheetWeekday').textContent = WEEKDAY_NAMES[dateObj.getDay()];
   document.getElementById('sheetSolar').textContent = `${pad2(d)}/${pad2(m)}/${y}`;
-  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${pad2(lunar.month)}${lunar.leap ? ' N' : ''} ${yearCanChi(lunar.year)}`;
+  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${lunarMonthLabelPadded(lunar.month)}${lunar.leap ? ' N' : ''} ${yearCanChi(lunar.year)}`;
   document.getElementById('sheetDayCanChi').textContent = dayCanChi(d, m, y);
 
   const term = getTermForDate(d, m, y, TZ);
