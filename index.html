@@ -1119,7 +1119,6 @@ const LUNAR_HOLIDAYS = {
   "15-7": { name: "Lễ Vu Lan", off: false },
   "15-8": { name: "Tết Trung Thu", off: false },
   "23-12":{ name: "Ông Công Ông Táo", off: false },
-  "30-12":{ name: "Giao Thừa", off: false },
 };
 
 function getHolidaysForDate(dd, mm, yy, lunar){
@@ -1128,9 +1127,23 @@ function getHolidaysForDate(dd, mm, yy, lunar){
   if (SOLAR_HOLIDAYS[sKey]) items.push(SOLAR_HOLIDAYS[sKey]);
   if (!lunar.leap){
     const lKey = `${lunar.day}-${lunar.month}`;
-    if (LUNAR_HOLIDAYS[lKey]) items.push(LUNAR_HOLIDAYS[lKey]);
+    if (lunar.month === 12 && isLastDayOfLunarYear(dd, mm, yy)){
+      items.push({ name: "Giao Thừa", off: true });
+    } else if (LUNAR_HOLIDAYS[lKey]){
+      items.push(LUNAR_HOLIDAYS[lKey]);
+    }
   }
   return items;
+}
+
+// Kiểm tra xem ngày dương lịch (dd/mm/yy) có phải ngày 29 hoặc 30 tháng Chạp
+// (ngày cuối cùng của năm âm lịch, tức Giao Thừa) hay không — dựa vào việc
+// ngày hôm sau có phải Mùng 1 Tết hay không, để đúng cả với tháng Chạp thiếu (29 ngày).
+function isLastDayOfLunarYear(dd, mm, yy){
+  const nextJd = jdFromDate(dd, mm, yy) + 1;
+  const [nd, nm, ny] = jdToDate(nextJd);
+  const nextLunar = convertSolar2Lunar(nd, nm, ny, TZ);
+  return nextLunar.day === 1 && nextLunar.month === 1 && !nextLunar.leap;
 }
 
 const WEEKDAY_NAMES = ["Chủ Nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"];
