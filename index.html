@@ -1280,7 +1280,7 @@ function renderDetail(d, m, y){
   const dateObj = new Date(y, m - 1, d);
   document.getElementById('sheetWeekday').textContent = WEEKDAY_NAMES[dateObj.getDay()];
   document.getElementById('sheetSolar').textContent = `${pad2(d)}/${pad2(m)}/${y}`;
-  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${lunarMonthLabelPadded(lunar.month)}${lunar.leap ? ' N' : ''} ${yearCanChi(lunar.year)}`;
+  document.getElementById('sheetLunar').textContent = `${pad2(lunar.day)}/${lunarMonthLabelPadded(lunar.month)}${lunar.leap ? ' N' : ''}, ${yearCanChi(lunar.year)}`;
   document.getElementById('sheetDayCanChi').textContent = dayCanChi(d, m, y);
 
   const term = getTermForDate(d, m, y, TZ);
