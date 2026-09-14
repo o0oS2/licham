@@ -163,9 +163,36 @@
 
   .lunar-month-caption{
     margin-top: 4px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 10px;
+  }
+  .lunar-month-caption .caption-text{
     font-size: 13.5px;
     color: var(--text-faint);
   }
+  .lunar-month-caption .caption-buttons{
+    display:flex;
+    gap: 6px;
+    flex-shrink:0;
+  }
+  .lunar-month-caption .nav-btn{
+    width: 26px; height: 26px;
+  }
+  .lunar-month-caption .nav-btn svg{ width:13px; height:13px; }
+
+  .lunar-month-caption .nav-btn.goto-btn{
+    width: auto;
+    padding: 0 11px 0 9px;
+    border-radius: 14px;
+    gap: 5px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .goto-btn-label{ line-height:1; }
 
   /* ---------- Calendar ---------- */
   .weekday-row{
@@ -350,6 +377,51 @@
   .row .k{ color: var(--text-dim); }
   .row .v{ color: var(--text); font-weight:500; text-align:right; }
 
+  .daymark{
+    margin-top: 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 7px;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .daymark .dot-mark{ width:7px; height:7px; border-radius:50%; }
+  .daymark.good{ color: var(--term); }
+  .daymark.good .dot-mark{ background: var(--term); }
+  .daymark.bad{ color: var(--accent-red); }
+  .daymark.bad .dot-mark{ background: var(--accent-red); }
+
+  .good-hours{
+    margin-top: 14px;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+  .good-hours-title{
+    font-size: 13.5px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .good-hours-list{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hour-chip{
+    background: var(--surface-2);
+    color: var(--text);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .hour-chip .h{
+    color: var(--text-faint);
+    font-weight: 400;
+    margin-left: 3px;
+  }
+
   .tet-countdown{
     margin-top: 14px;
     text-align: center;
@@ -377,6 +449,148 @@
     .month-title{ font-size: 26px; }
     .day-cell .solar{ width:33px; height:33px; font-size:16px; }
   }
+
+  /* ---------- Đi đến ngày (bottom sheet) ---------- */
+  .goto-backdrop{
+    position:fixed; inset:0;
+    background: rgba(0,0,0,0.5);
+    opacity:0; pointer-events:none;
+    transition: opacity .22s ease;
+    z-index: 40;
+  }
+  .goto-backdrop.open{ opacity:1; pointer-events:auto; }
+
+  .goto-sheet{
+    position:fixed;
+    left:50%; bottom:0;
+    transform: translate(-50%, 105%);
+    width:100%; max-width:480px;
+    background: var(--surface);
+    border-radius: 22px 22px 0 0;
+    padding: 10px 20px calc(env(safe-area-inset-bottom) + 20px);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.35);
+    z-index: 41;
+    transition: transform .3s cubic-bezier(.32,.72,0,1);
+  }
+  .goto-sheet.open{ transform: translate(-50%, 0); }
+
+  .goto-handle{
+    width:36px; height:4px;
+    border-radius:2px;
+    background: var(--line);
+    margin: 4px auto 14px;
+  }
+
+  .goto-title{
+    font-family:'Fraunces', serif;
+    font-weight: 480;
+    font-size: 19px;
+    text-align:center;
+    margin-bottom: 16px;
+  }
+
+  .goto-toggle{
+    display:flex;
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 3px;
+  }
+  .goto-toggle-btn{
+    flex:1;
+    border:none;
+    background:transparent;
+    color: var(--text-dim);
+    font-family:'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    font-weight:500;
+    padding: 9px 0;
+    border-radius: 9px;
+    cursor:pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .goto-toggle-btn.active{ background: var(--gold); color:#1a1508; }
+
+  .goto-fields{
+    display:flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .goto-field{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .goto-field.goto-field-year{ flex: 1.3; }
+  .goto-field label{
+    font-size: 12px;
+    color: var(--text-dim);
+    padding-left: 2px;
+  }
+  .goto-field input,
+  .goto-field select{
+    width:100%;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 0;
+    font-size: 16px;
+    font-family:'Be Vietnam Pro', sans-serif;
+    color: var(--text);
+    text-align:center;
+  }
+  .goto-field input:focus,
+  .goto-field select:focus{ outline: 1.5px solid var(--gold-dim); }
+  .goto-field select{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-align-last: center;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239099BE' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 14px 14px;
+    padding-right: 20px;
+  }
+  .goto-field select option{
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .goto-leap{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--text-dim);
+    cursor:pointer;
+  }
+  .goto-leap input{ width:16px; height:16px; accent-color: var(--gold); }
+
+  .goto-error{
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--accent-red);
+  }
+
+  .goto-submit{
+    margin-top: 18px;
+    width:100%;
+    padding: 13px 0;
+    border:none;
+    border-radius: 14px;
+    background: var(--gold);
+    color: #1a1508;
+    font-size: 15px;
+    font-weight:600;
+    font-family:'Be Vietnam Pro', sans-serif;
+    cursor:pointer;
+    transition: transform .1s ease;
+  }
+  .goto-submit:active{ transform: scale(0.98); }
 </style>
 
 </head>
@@ -389,10 +603,6 @@
       <div class="month-title" id="monthTitle">Tháng <span class="year">2026</span></div>
       <div class="nav-buttons">
         <div class="nav-btn today-btn" id="todayNavBtn" aria-label="Về hôm nay">Hôm nay</div>
-        <div class="nav-btn" id="themeBtn" aria-label="Đổi giao diện sáng/tối">
-          <svg id="themeIconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"/></svg>
-          <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        </div>
         <div class="nav-btn" id="prevBtn" aria-label="Tháng trước">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </div>
@@ -401,7 +611,19 @@
         </div>
       </div>
     </div>
-    <div class="lunar-month-caption" id="lunarCaption">Tháng âm lịch</div>
+    <div class="lunar-month-caption" id="lunarCaption">
+      <span class="caption-text" id="lunarCaptionText">Tháng âm lịch</span>
+      <div class="caption-buttons">
+        <div class="nav-btn goto-btn" id="gotoBtn" aria-label="Đổi ngày">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="14" height="16" rx="2"/><path d="M7 2v4M13 2v4M3 9h14"/><path d="M17 13l4 3-4 3"/></svg>
+          <span class="goto-btn-label">Đổi ngày</span>
+        </div>
+        <div class="nav-btn" id="themeBtn" aria-label="Đổi giao diện sáng/tối">
+          <svg id="themeIconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"/></svg>
+          <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </div>
+      </div>
+    </div>
   </header>
 
   <div class="weekday-row">
@@ -427,6 +649,13 @@
       <div class="row"><span class="k">Ngày (Can Chi)</span><span class="v" id="sheetDayCanChi">Mậu Thân</span></div>
       <div class="row"><span class="k">Tiết khí</span><span class="v" id="sheetTerm">Bạch Lộ</span></div>
     </div>
+    <div class="daymark" id="sheetDayMark">
+      <i class="dot-mark"></i><span id="sheetDayMarkText">Ngày Hoàng Đạo</span>
+    </div>
+    <div class="good-hours">
+      <div class="good-hours-title">Giờ hoàng đạo trong ngày</div>
+      <div class="good-hours-list" id="sheetGoodHours"></div>
+    </div>
     <div class="tet-countdown" id="sheetTetCountdown">Còn 55 ngày nữa đến Tết Âm lịch Đinh Mùi</div>
     <div class="note" id="sheetNote" style="display:none;"></div>
   </div>
@@ -434,6 +663,34 @@
   <footer>Lịch âm dương lịch Việt Nam</footer>
 </div>
 
+<div class="goto-backdrop" id="gotoBackdrop"></div>
+<div class="goto-sheet" id="gotoSheet" role="dialog" aria-modal="true" aria-label="Đi đến ngày">
+  <div class="goto-handle"></div>
+  <div class="goto-title">Đi đến ngày</div>
+  <div class="goto-toggle" id="gotoToggle">
+    <button type="button" class="goto-toggle-btn active" data-mode="solar">Dương lịch</button>
+    <button type="button" class="goto-toggle-btn" data-mode="lunar">Âm lịch</button>
+  </div>
+  <div class="goto-fields">
+    <div class="goto-field">
+      <label for="gotoDay">Ngày</label>
+      <select id="gotoDay"></select>
+    </div>
+    <div class="goto-field">
+      <label for="gotoMonth">Tháng</label>
+      <select id="gotoMonth"></select>
+    </div>
+    <div class="goto-field goto-field-year">
+      <label for="gotoYear">Năm</label>
+      <select id="gotoYear"></select>
+    </div>
+  </div>
+  <label class="goto-leap" id="gotoLeapWrap" style="display:none;">
+    <input type="checkbox" id="gotoLeap">Tháng nhuận
+  </label>
+  <div class="goto-error" id="gotoError" style="display:none;"></div>
+  <button type="button" class="goto-submit" id="gotoSubmit">Xem tháng này</button>
+</div>
 
 <script>
 /* =========================================================
@@ -634,6 +891,29 @@ function dayCanChi(dd, mm, yy){
 }
 function chiIndexOfYear(y){ return (y + 8) % 12; }
 
+/* ---------- Ngày tốt/xấu (Hoàng đạo/Hắc đạo) & Giờ hoàng đạo ---------- */
+// Chỉ số Chi: Tý0 Sửu1 Dần2 Mão3 Thìn4 Tỵ5 Ngọ6 Mùi7 Thân8 Dậu9 Tuất10 Hợi11
+function dayChiIndex(dd, mm, yy){
+  const jd = jdFromDate(dd, mm, yy);
+  return (jd + 1) % 12;
+}
+
+// Theo tháng âm lịch, các Chi ứng với ngày Hoàng đạo (bộ 6 chi, dịch 2 vị trí mỗi tháng)
+const HOANGDAO_DAY_BASE = [0, 1, 4, 5, 7, 10];
+function isGoodDay(lunarMonth, chiIdx){
+  const off = (2 * ((lunarMonth - 1) % 6)) % 12;
+  const goodSet = HOANGDAO_DAY_BASE.map(x => (x + off) % 12);
+  return goodSet.includes(chiIdx);
+}
+
+// Giờ hoàng đạo theo Chi của ngày (bộ 6 giờ, dịch 2 vị trí theo cặp Chi ngày)
+const HOANGDAO_HOUR_BASE = [0, 1, 3, 6, 8, 9];
+const HOUR_RANGES = ["23h-1h","1h-3h","3h-5h","5h-7h","7h-9h","9h-11h","11h-13h","13h-15h","15h-17h","17h-19h","19h-21h","21h-23h"];
+function getGoodHours(dayChiIdx){
+  const off = (2 * (dayChiIdx % 6)) % 12;
+  return HOANGDAO_HOUR_BASE.map(x => (x + off) % 12);
+}
+
 const LUNAR_MONTH_NAMES = ["Giêng","Hai","Ba","Tư","Năm","Sáu","Bảy","Tám","Chín","Mười","Mười Một","Chạp"];
 
 /* ---------- Ngày lễ, Tết Việt Nam ---------- */
@@ -687,7 +967,7 @@ let viewMonth = today.getMonth() + 1; // 1-12
 let selected = { d: today.getDate(), m: viewMonth, y: viewYear };
 
 const monthTitle = document.getElementById('monthTitle');
-const lunarCaption = document.getElementById('lunarCaption');
+const lunarCaption = document.getElementById('lunarCaptionText');
 const grid = document.getElementById('grid');
 
 function isSameDate(d1m1y1, d2, m2, y2){
@@ -813,6 +1093,20 @@ function renderDetail(d, m, y){
   document.getElementById('sheetTerm').textContent =
     `${term.name} (${term.start[0]}/${term.start[1]} – ${term.end[0]}/${term.end[1]})`;
 
+  const chiIdx = dayChiIndex(d, m, y);
+  const goodDay = isGoodDay(lunar.month, chiIdx);
+  const markEl = document.getElementById('sheetDayMark');
+  const markText = document.getElementById('sheetDayMarkText');
+  markEl.className = 'daymark ' + (goodDay ? 'good' : 'bad');
+  markText.textContent = goodDay ? 'Ngày Hoàng Đạo (ngày tốt)' : 'Ngày Hắc Đạo (ngày xấu)';
+
+  const goodHoursEl = document.getElementById('sheetGoodHours');
+  goodHoursEl.innerHTML = getGoodHours(chiIdx)
+    .slice()
+    .sort((a, b) => a - b)
+    .map(hIdx => `<span class="hour-chip">${CHI[hIdx]}<span class="h">${HOUR_RANGES[hIdx]}</span></span>`)
+    .join('');
+
   const currentJd = jdFromDate(d, m, y);
   const nextTetYear = lunar.year + 1;
   const tetDate = convertLunar2Solar(1, 1, nextTetYear, false, TZ);
@@ -877,6 +1171,140 @@ grid.addEventListener('touchend', e => {
   }
   touchStartX = null;
 }, {passive:true});
+
+/* ---------- Đi đến ngày ---------- */
+const gotoBackdrop = document.getElementById('gotoBackdrop');
+const gotoSheet = document.getElementById('gotoSheet');
+const gotoToggleBtns = document.querySelectorAll('.goto-toggle-btn');
+const gotoDay = document.getElementById('gotoDay');
+const gotoMonth = document.getElementById('gotoMonth');
+const gotoYear = document.getElementById('gotoYear');
+const gotoLeapWrap = document.getElementById('gotoLeapWrap');
+const gotoLeap = document.getElementById('gotoLeap');
+const gotoError = document.getElementById('gotoError');
+let gotoMode = 'solar';
+
+function fillSelect(select, min, max, formatter){
+  const frag = document.createDocumentFragment();
+  for (let i = min; i <= max; i++){
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = formatter ? formatter(i) : i;
+    frag.appendChild(opt);
+  }
+  select.innerHTML = '';
+  select.appendChild(frag);
+}
+
+function updateGotoDayOptions(){
+  const maxDay = gotoMode === 'lunar' ? 30 : 31;
+  const prevValue = gotoDay.value;
+  fillSelect(gotoDay, 1, maxDay);
+  if (prevValue && Number(prevValue) <= maxDay) gotoDay.value = prevValue;
+}
+
+function initGotoSelects(){
+  updateGotoDayOptions();
+  fillSelect(gotoMonth, 1, 12, n => `Tháng ${n}`);
+  const nowY = today.getFullYear();
+  fillSelect(gotoYear, nowY - 100, nowY + 100);
+  gotoYear.value = nowY;
+}
+initGotoSelects();
+
+function showGotoError(msg){
+  gotoError.textContent = msg;
+  gotoError.style.display = 'block';
+}
+
+function openGotoSheet(){
+  gotoError.style.display = 'none';
+  updateGotoDayOptions();
+  // Điền sẵn theo ngày đang chọn trên lịch, quy đổi theo chế độ hiện tại
+  if (gotoMode === 'solar'){
+    gotoDay.value = selected.d;
+    gotoMonth.value = selected.m;
+    gotoYear.value = selected.y;
+  } else {
+    const l = convertSolar2Lunar(selected.d, selected.m, selected.y, TZ);
+    gotoDay.value = l.day;
+    gotoMonth.value = l.month;
+    gotoYear.value = l.year;
+    gotoLeap.checked = l.leap;
+  }
+  gotoBackdrop.classList.add('open');
+  gotoSheet.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGotoSheet(){
+  gotoBackdrop.classList.remove('open');
+  gotoSheet.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('gotoBtn').addEventListener('click', openGotoSheet);
+gotoBackdrop.addEventListener('click', closeGotoSheet);
+
+gotoToggleBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.mode === gotoMode) return;
+    gotoMode = btn.dataset.mode;
+    gotoToggleBtns.forEach(b => b.classList.toggle('active', b === btn));
+    gotoLeapWrap.style.display = gotoMode === 'lunar' ? 'flex' : 'none';
+    gotoError.style.display = 'none';
+
+    // Quy đổi giá trị đang nhập sang chế độ mới, nếu hợp lệ
+    const d = parseInt(gotoDay.value, 10), m = parseInt(gotoMonth.value, 10), y = parseInt(gotoYear.value, 10);
+    updateGotoDayOptions();
+    if (d && m && y){
+      if (gotoMode === 'lunar'){
+        const l = convertSolar2Lunar(d, m, y, TZ);
+        gotoDay.value = l.day; gotoMonth.value = l.month; gotoYear.value = l.year; gotoLeap.checked = l.leap;
+      } else {
+        const s = convertLunar2Solar(d, m, y, gotoLeap.checked, TZ);
+        if (s){ gotoDay.value = s[0]; gotoMonth.value = s[1]; gotoYear.value = s[2]; }
+      }
+    }
+  });
+});
+
+document.getElementById('gotoSubmit').addEventListener('click', () => {
+  const d = parseInt(gotoDay.value, 10);
+  const m = parseInt(gotoMonth.value, 10);
+  const y = parseInt(gotoYear.value, 10);
+
+  gotoError.style.display = 'none';
+
+  if (!d || !m || !y || m < 1 || m > 12 || d < 1 || d > 30 || y < 1800 || y > 2200){
+    showGotoError('Vui lòng nhập ngày hợp lệ.');
+    return;
+  }
+
+  let target;
+  if (gotoMode === 'solar'){
+    const daysInMonth = new Date(y, m, 0).getDate();
+    if (d > daysInMonth){
+      showGotoError(`Tháng ${m}/${y} chỉ có ${daysInMonth} ngày.`);
+      return;
+    }
+    target = { d, m, y };
+  } else {
+    const s = convertLunar2Solar(d, m, y, gotoLeap.checked, TZ);
+    if (!s){
+      showGotoError('Ngày âm lịch không hợp lệ (có thể tháng này không nhuận).');
+      return;
+    }
+    target = { d: s[0], m: s[1], y: s[2] };
+  }
+
+  viewMonth = target.m;
+  viewYear = target.y;
+  selected = { d: target.d, m: target.m, y: target.y };
+  renderMonth();
+  renderDetail(target.d, target.m, target.y);
+  closeGotoSheet();
+});
 
 /* ---------- Giao diện sáng / tối ---------- */
 const themeBtn = document.getElementById('themeBtn');
