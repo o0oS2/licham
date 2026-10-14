@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <title>Lịch Âm</title>
 <meta name="description" content="Lịch âm Việt Nam — xem ngày âm, ngày lễ, can chi theo từng ngày.">
-<meta name="theme-color" content="#10152B">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -31,42 +31,28 @@
     --term: #7FB69E;
     --holiday: #8B9BE0;
     --line: rgba(255,255,255,0.07);
+    --glow: var(--surface-2);
+    --on-gold: #1a1508;
     --radius: 20px;
     color-scheme: dark;
   }
 
-  @media (prefers-color-scheme: light){
-    :root:not([data-theme="dark"]){
-      --bg: #F6F2E7;
-      --bg-soft: #FBF8F1;
-      --surface: #FFFFFF;
-      --surface-2: #EFE8D6;
-      --gold: #A9762F;
-      --gold-dim: #8C6529;
-      --text: #2B2416;
-      --text-dim: #746947;
-      --text-faint: #A79876;
-      --accent-red: #A8463C;
-      --term: #4C8B70;
-      --holiday: #5B63A6;
-      --line: rgba(30,24,10,0.09);
-      color-scheme: light;
-    }
-  }
-  :root[data-theme="light"]{
-    --bg: #F6F2E7;
-    --bg-soft: #FBF8F1;
-    --surface: #FFFFFF;
-    --surface-2: #EFE8D6;
-    --gold: #A9762F;
-    --gold-dim: #8C6529;
-    --text: #2B2416;
-    --text-dim: #746947;
-    --text-faint: #A79876;
-    --accent-red: #A8463C;
-    --term: #4C8B70;
-    --holiday: #5B63A6;
-    --line: rgba(30,24,10,0.09);
+  :root:not([data-theme="dark"]){
+    --bg: #FFFFFF;
+    --bg-soft: #FFFFFF;
+    --surface: #F4F5F8;
+    --surface-2: #E8EBF1;
+    --glow: #FFFFFF;
+    --gold: #A66A0B;
+    --gold-dim: #8A5608;
+    --on-gold: #FFFFFF;
+    --text: #0F1218;
+    --text-dim: #3F4654;
+    --text-faint: #646C7C;
+    --accent-red: #D32F2F;
+    --term: #1E8A5E;
+    --holiday: #3B4BC4;
+    --line: rgba(15,18,24,0.13);
     color-scheme: light;
   }
 
@@ -88,7 +74,7 @@
     display:flex;
     justify-content:center;
     background:
-      radial-gradient(ellipse 700px 400px at 50% -10%, var(--surface-2) 0%, transparent 60%),
+      radial-gradient(ellipse 700px 400px at 50% -10%, var(--glow) 0%, transparent 60%),
       var(--bg);
   }
 
@@ -231,15 +217,18 @@
     grid-template-columns: repeat(7, 1fr);
     margin-top: 12px;
     padding-bottom: 6px;
-    border-bottom: 1px solid var(--line);
+    padding-top: 6px;
+    border-top: 2px solid var(--text);
+    border-bottom: 2px solid var(--text);
   }
   .weekday-row span{
     text-align:center;
-    font-size: 14px;
-    color: var(--text-faint);
-    font-weight: 500;
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 800;
+    letter-spacing: 0.01em;
   }
-  .weekday-row span.sun{ color: var(--accent-red); opacity:0.75; }
+  .weekday-row span.sun{ color: var(--accent-red); opacity:1; }
 
   .grid{
     display:grid;
@@ -262,8 +251,8 @@
   .day-cell:nth-child(7n){ border-right:none; }
 
   .day-cell .solar{
-    font-size: 17px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 700;
     color: var(--text);
     width: 35px; height: 35px;
     display:flex; align-items:center; justify-content:center;
@@ -273,7 +262,8 @@
 
   .day-cell .lunar{
     margin-top: 1px;
-    font-size: 15px;
+    font-size: 14px;
+    font-weight: 500;
     color: var(--text-faint);
     height: 17px;
   }
@@ -286,23 +276,23 @@
 
   .day-cell.today .solar{
     background: var(--gold);
-    color: #1a1508;
-    font-weight: 600;
+    color: var(--on-gold);
+    font-weight: 700;
   }
-  .day-cell.today .lunar{ color: var(--gold-dim); }
+  .day-cell.today .lunar{ color: var(--gold-dim); font-weight: 700; }
 
   .day-cell.first-day .lunar{ color: var(--gold); font-weight: 600; }
   .day-cell.full-moon .lunar{ color: var(--gold); font-weight: 600; }
 
   .day-cell.selected:not(.today) .solar{
-    box-shadow: inset 0 0 0 1.5px var(--gold-dim);
+    box-shadow: inset 0 0 0 2px var(--gold);
   }
 
   .dot{
     position:absolute;
     top: 4px;
     right: 6px;
-    width: 4px; height:4px;
+    width: 5px; height:5px;
     border-radius:50%;
     background: var(--gold);
   }
@@ -311,7 +301,7 @@
   }
   .dot.off{
     background: var(--accent-red);
-    width: 5px; height: 5px;
+    width: 6px; height: 6px;
   }
   .day-cell.today .dot{ display:none; }
 
@@ -321,10 +311,10 @@
     top: 3px;
     left: 50%;
     transform: translateX(-50%);
-    width: 12px; height: 2px;
+    width: 14px; height: 3px;
     border-radius: 2px;
     background: var(--term);
-    opacity: 0.85;
+    opacity: 1;
   }
 
   /* ---------- Legend ---------- */
@@ -1522,7 +1512,7 @@ const lightMedia = window.matchMedia('(prefers-color-scheme: light)');
 function currentIsLight(){
   const saved = localStorage.getItem('theme');
   if (saved) return saved === 'light';
-  return lightMedia.matches;
+  return true; // mặc định nền trắng
 }
 
 function updateThemeIcon(){
@@ -1532,7 +1522,7 @@ function updateThemeIcon(){
   const label = document.getElementById('themeLabel');
   if (label) label.textContent = light ? 'Sáng' : 'Tối';
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', light ? '#F6F2E7' : '#10152B');
+  if (meta) meta.setAttribute('content', light ? '#FFFFFF' : '#10152B');
 }
 
 function applySavedTheme(){
