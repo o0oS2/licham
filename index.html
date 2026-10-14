@@ -269,14 +269,16 @@
     font-size: 20px;
     font-weight: 700;
     color: var(--text);
-    width: 37px; height: 37px;
+    width: 37px; height: 28px;
+    line-height: 1;
     display:flex; align-items:center; justify-content:center;
     border-radius: 50%;
     transition: background .15s ease;
   }
 
   .day-cell .lunar{
-    margin-top: 1px;
+    margin-top: 0;
+    line-height: 1;
     font-size: 15px;
     font-weight: 500;
     color: var(--text-faint);
@@ -483,7 +485,7 @@
 
   @media (max-width: 340px){
     .month-title{ font-size: 19px; }
-    .day-cell .solar{ width:34px; height:34px; font-size:18px; }
+    .day-cell .solar{ width:34px; height:26px; font-size:18px; }
   }
 
   /* ---------- Đi đến ngày (bottom sheet) ---------- */
