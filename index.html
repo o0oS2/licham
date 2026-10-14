@@ -32,6 +32,8 @@
     --holiday: #8B9BE0;
     --line: rgba(255,255,255,0.07);
     --glow: var(--surface-2);
+    --grid-line: #2E3760;
+    --head-bg: #202849;
     --on-gold: #1a1508;
     --radius: 20px;
     color-scheme: dark;
@@ -43,6 +45,8 @@
     --surface: #F4F5F8;
     --surface-2: #E8EBF1;
     --glow: #FFFFFF;
+    --grid-line: #CBD0DC;
+    --head-bg: #EEF0F5;
     --gold: #A66A0B;
     --gold-dim: #8A5608;
     --on-gold: #FFFFFF;
@@ -215,25 +219,35 @@
   .weekday-row{
     display:grid;
     grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
     margin-top: 12px;
-    padding-bottom: 6px;
-    padding-top: 6px;
-    border-top: 2px solid var(--text);
-    border-bottom: 2px solid var(--text);
+    background: var(--grid-line);
+    border: 1.5px solid var(--grid-line);
+    border-bottom: none;
+    border-radius: 14px 14px 0 0;
+    overflow: hidden;
   }
   .weekday-row span{
     text-align:center;
+    padding: 9px 0 8px;
     font-size: 15px;
     color: var(--text);
+    background: var(--head-bg);
     font-weight: 800;
     letter-spacing: 0.01em;
   }
-  .weekday-row span.sun{ color: var(--accent-red); opacity:1; }
+  .weekday-row span.sun{ color: var(--accent-red); }
 
   .grid{
     display:grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(44px, auto);
+    grid-auto-rows: minmax(50px, auto);
+    gap: 1px;
+    background: var(--grid-line);
+    border: 1.5px solid var(--grid-line);
+    border-top: 2px solid var(--text-dim);
+    border-radius: 0 0 14px 14px;
+    overflow: hidden;
   }
 
   .day-cell{
@@ -244,11 +258,11 @@
     justify-content:center;
     padding: 3px 2px 5px;
     cursor:pointer;
-    border-bottom: 1px solid var(--line);
-    border-right: 1px solid var(--line);
+    background: var(--bg);
+    transition: background .15s ease;
   }
+  .day-cell:active{ background: var(--surface); }
   .day-cell.empty{ cursor:default; }
-  .day-cell:nth-child(7n){ border-right:none; }
 
   .day-cell .solar{
     font-size: 18px;
